@@ -1,0 +1,61 @@
+Działanie podczas partii:
+Gracz1 nacisnął zegar -> aktywuje się zegar gracza 2
+Gracz1 nacisnął zegar -> sprawdzenie warunków dla danego trybu
+Startujemy partię -> aktywuje się zegar gracza 1
+Graczowi kończy się czas -> wyświetlamy informację o końcu czasu
+Graczowi upłynęła sekunda -> uaktualniamy czas do końca
+Zatrzymano zegar -> czas żadnego gracza nie leci
+Interwencja sędziego -> przejście w tryb edytowania czasu graczy
+
+Interwencja sędziego:
+Dodawanie czasu
+Ustawianie ilości ruchów
+
+Konfiguracja:
+Zegar został uruchomiony -> aktywuje się wybór trybu
+Aktywowano tryb1 -> ustawiamy ilość czasu na partię
+Aktywowano tryb2 -> ustawiamy parametry czasu (x, y, z, a)
+Cofanie wprowadzonych danych
+Edycja
+Akceptowanie
+Zatwierdzono tryb gry -> Przechodzimy do partii
+
+
+Dane:
+czas obu graczy
+ilość wykonanych ruchów
+informacje o konfiguracji (tryb i parametry czasu)
+informacja o stanie (Partia, Konfiguracja)
+
+Gracz - w systemie jest dwóch graczy
+Każdy gracz ma jakąś ilość czasu do końca partii
+
+Tempo gry:
+Czas początkowy
+Czas po każdym ruchu
+Czas dodany po x ruchów
+Po ilu ruchach dodać czas
+
+Partia:
+Dwóch graczy
+Który z graczy aktualnie ma wykonać ruch
+Któremu z graczy pierwszemu skończył się czas
+Stan: Początkowy, Ruch Gracza 1, Ruch Gracza 2, Pauza, Interwencja sędziego, Końcowy
+
+Wyświetlacz:
+Czas pozostały obydwu graczom do końca
+Sygnalizacja, któremu graczowi pierwszemu skończył się czas
+Czy aktualnie zegar jest uruchomiony, czy zapauzowany
+
+Zdarzenia podczas partii:
+Gracz wcisnął zegar
+Graczowi upłynęła sekunda
+Graczowi skończył się czas
+Interwencja sędziego
+
+
+Konfiguracja:
+
+Wyświetlanie i obsługa:
+Na wyświetlaczu mamy menu
++/-, ok, cancel, power

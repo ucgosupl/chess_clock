@@ -1,0 +1,17 @@
+Zegar pokazuje czas pozostały do końca partii dla dwóch graczy.
+Zegar pokazuje ilość minut i sekund do końca.
+
+Aktywacja zegara dla jednej i drugiej osoby.
+
+Zegar powinien pokazywać informację, że graczowi skończył się czas.
+Kiedy jednemu z graczy skończy się czas, czas drugiego gracza jest dalej liczony i również może się skończyć.
+Kiedy obu graczom skończy się czas, zegar pokazuje któremu z nich skończył się pierwszy.
+
+Zegar można w każdym momencie zatrzymać.
+Kiedy zegar jest zatrzymany istnieje możliwość zmiany czasu pozostałego graczowi.
+
+Tryb 1 - stała ilość czasu na całą partię.
+Przed uruchomieniem zegara możemy ustawić ilość minut.
+
+Tryb 2 - x minut na y ruchów + z minut na dokończenie i a sek dodawanych po każdym ruchu.
+
