@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "cstdbool": "cpp",
+        "chrono": "cpp",
+        "random": "cpp",
+        "limits": "cpp"
+    }
+}
