@@ -14,16 +14,23 @@ enum player_id
 
 struct time_config;
 
+typedef uint32_t game_time_t;
+
 void game_init(struct time_config *time);
 
-void game_move_done(void);
+void game_current_player_moved(void);
 
 void game_start(void);
 void game_pause(void);
+bool game_is_started(void);
 
 void game_referee_intervention(game_time_t time_p1, moves_cnt_t moves_p1, game_time_t time_p2, moves_cnt_t moves_p2);
 
-void player_second_elapsed(enum player_id player);
+void current_player_second_elapsed(void);
 // how to count seconds on hardware timers
 // hw interface will need info that player made a move
+
+game_time_t player_get_time_left(enum player_id player);
+
+enum player_id game_player_to_move(void);
 
