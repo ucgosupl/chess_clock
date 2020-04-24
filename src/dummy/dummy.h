@@ -33,4 +33,5 @@ void current_player_second_elapsed(void);
 game_time_t player_get_time_left(enum player_id player);
 
 enum player_id game_player_to_move(void);
+enum player_id game_which_player_exceeded_time_first(void);
 

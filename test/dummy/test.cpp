@@ -12,10 +12,11 @@ extern "C"
 
 static const game_time_t DEFAULT_BASE_TIME = MIN_TO_SEC(5);
 
-static void init_game_with_time_config(game_time_t base_time)
+static void init_game_with_time_config(game_time_t base_time, game_time_t bonus_per_move = 0)
 {
     struct time_config config;
     config.base_time = base_time;
+    config.bonus_per_move = bonus_per_move;
     game_init(&config);
 }
 
@@ -268,6 +269,131 @@ SCENARIO("Second elapsed")
             }
         }
     }
+}
+
+
+SCENARIO("Time ended")
+{
+    GIVEN("Both players have 1s left")
+    {
+        init_game_with_time_config(1);
+
+        WHEN("Game Started")
+        {
+            game_start();
+
+            THEN("Time didn't end for any player")
+            {
+                REQUIRE(PLAYER_NONE == game_which_player_exceeded_time_first());
+            }
+
+            WHEN("Second elapsed for Player1")
+            {
+                current_player_second_elapsed();
+
+                THEN("Time ended for Player1")
+                {
+                    REQUIRE(PLAYER_1 == game_which_player_exceeded_time_first());
+                }
+
+                WHEN("Player1 moved")
+                {
+                    game_current_player_moved();
+
+                    THEN("Time ended for Player1")
+                    {
+                        REQUIRE(PLAYER_1 == game_which_player_exceeded_time_first());
+                    }
+
+                    WHEN("Second elapsed for Player2")
+                    {
+                        current_player_second_elapsed();
+
+                        THEN("Time ended for Player1")
+                        {
+                            REQUIRE(PLAYER_1 == game_which_player_exceeded_time_first());
+                        }
+                    }
+                }
+            }
+
+            WHEN("Second elapsed for Player2")
+            {
+                game_current_player_moved();
+                current_player_second_elapsed();
+
+                THEN("Time ended for Player2")
+                {
+                    REQUIRE(PLAYER_2 == game_which_player_exceeded_time_first());
+                }
+
+                WHEN("Player2 moved")
+                {
+                    game_current_player_moved();
+
+                    THEN("Time ended for Player2")
+                    {
+                        REQUIRE(PLAYER_2 == game_which_player_exceeded_time_first());
+                    }
+
+                    WHEN("Second elapsed for Player1")
+                    {
+                        current_player_second_elapsed();
+
+                        THEN("Time ended for Player2")
+                        {
+                            REQUIRE(PLAYER_2 == game_which_player_exceeded_time_first());
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+SCENARIO("Bonus time per move")
+{
+    GIVEN("Given Player have 5 min left and bonus time 30 s")
+    {
+        init_game_with_time_config(DEFAULT_BASE_TIME, 30);
+        game_start();
+
+        WHEN("When Player1 moves")
+        {
+            game_current_player_moved();
+
+            THEN("Player1 have 5 min 30 s left")
+            {
+                game_time_t time_left = player_get_time_left(PLAYER_1);
+                REQUIRE(time_left == DEFAULT_BASE_TIME + 30);
+            }
+
+            THEN("Player2 have 5 min left")
+            {
+                game_time_t time_left = player_get_time_left(PLAYER_2);
+                REQUIRE(time_left == DEFAULT_BASE_TIME);
+            }
+
+            WHEN("When Player2 moves")
+            {
+                game_current_player_moved();
+
+                THEN("Player1 have 5 min 30 s left")
+                {
+                    game_time_t time_left = player_get_time_left(PLAYER_1);
+                    REQUIRE(time_left == DEFAULT_BASE_TIME + 30);
+                }
+
+                THEN("Player2 have 5 min 30 s left")
+                {
+                    game_time_t time_left = player_get_time_left(PLAYER_2);
+                    REQUIRE(time_left == DEFAULT_BASE_TIME + 30);
+                }
+            }
+        }
+    }
+
+    //Handle time exceeded
 }
 
 

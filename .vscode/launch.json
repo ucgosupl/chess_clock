@@ -2,10 +2,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "debug template tests",
+            "name": "debug dummy tests",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/test/template/out/template_tests.exe",
+            "program": "${workspaceFolder}/test/dummy/out/dummy_tests.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
