@@ -271,7 +271,6 @@ SCENARIO("Second elapsed")
     }
 }
 
-
 SCENARIO("Time ended")
 {
     GIVEN("Both players have 1s left")
@@ -353,7 +352,7 @@ SCENARIO("Time ended")
 
 SCENARIO("Bonus time per move")
 {
-    GIVEN("Given Player have 5 min left and bonus time 30 s")
+    GIVEN("Players have 5 min left and bonus time 30 s")
     {
         init_game_with_time_config(DEFAULT_BASE_TIME, 30);
         game_start();
@@ -393,7 +392,46 @@ SCENARIO("Bonus time per move")
         }
     }
 
-    //Handle time exceeded
+    GIVEN("Players have 1 s left and bonus time 30 s")
+    {
+        init_game_with_time_config(1, 30);
+        game_start();
+
+        WHEN("Second elapsed")
+        {
+            current_player_second_elapsed();
+
+            WHEN("Player1 moved")
+            {
+                game_current_player_moved();
+
+                THEN("Player1 time left is 0")
+                {
+                    game_time_t time_left = player_get_time_left(PLAYER_1);
+                    REQUIRE(time_left == 0);
+                }
+            }
+        }
+
+        WHEN("Player1 moved")
+        {
+            game_current_player_moved();
+
+            WHEN("Second elapsed")
+            {
+                current_player_second_elapsed();
+
+                WHEN("Player2 moved")
+                {
+                    game_current_player_moved();
+
+                    THEN("Player2 time left is 0")
+                    {
+                        game_time_t time_left = player_get_time_left(PLAYER_2);
+                        REQUIRE(time_left == 0);
+                    }
+                }
+            }
+        }
+    }
 }
-
-

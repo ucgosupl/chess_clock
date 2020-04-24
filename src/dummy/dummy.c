@@ -45,6 +45,7 @@ static struct player * get_params_for_player(enum player_id player);
 static void decrease_time_for_player(enum player_id player);
 static void decrease_time_for_current_player(void);
 static void update_player_exceeded_time(enum player_id player);
+static void update_time_when_player_moved(enum player_id player);
 
 void game_init(struct time_config *time)
 {
@@ -67,12 +68,12 @@ void game_current_player_moved(void)
             break;
         
         case PLAYER_1:
-            game_state.player1.time_left += game_state.current_time_config.bonus_per_move;
+            update_time_when_player_moved(PLAYER_1);
             game_state.player_to_move = PLAYER_2;
             break;
 
         case PLAYER_2:
-            game_state.player2.time_left += game_state.current_time_config.bonus_per_move;
+            update_time_when_player_moved(PLAYER_2);
             game_state.player_to_move = PLAYER_1;
             break;
         
@@ -208,3 +209,15 @@ static void update_player_exceeded_time(enum player_id player)
     }
 }
 
+static void update_time_when_player_moved(enum player_id player)
+{
+    struct player *player_params = get_params_for_player(player);
+
+    if (NULL != player_params)
+    {
+        if (0 < player_params->time_left)
+        {
+            player_params->time_left += game_state.current_time_config.bonus_per_move;
+        }
+    }
+}
