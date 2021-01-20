@@ -4,7 +4,7 @@ extern "C"
 {
 #include "game/game.h"
 
-#include "game/time_config.h"
+#include "time_config.h"
 }
 
 

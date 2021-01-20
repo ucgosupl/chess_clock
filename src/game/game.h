@@ -1,6 +1,6 @@
 #pragma once
 
-#include "game_types.h"
+#include "time_config.h"
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -11,8 +11,6 @@ enum player_id
     PLAYER_1,
     PLAYER_2,
 };
-
-struct time_config;
 
 void game_init(struct time_config *time);
 

@@ -3,6 +3,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "time_config.h"
+
 enum time_mode_id
 {
     TIME_MODE_UNKNOWN,

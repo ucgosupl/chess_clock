@@ -1,9 +1,9 @@
 #pragma once
 
-#include "game_types.h"
-
 #include <stdint.h>
-#include <stdbool.h>
+
+typedef int32_t game_time_t;
+typedef int32_t moves_cnt_t;
 
 #define SEC_PER_MIN         60
 #define MIN_TO_SEC(min)     ((min) * SEC_PER_MIN)
@@ -22,3 +22,5 @@ struct time_config
     game_time_t time_added;
     moves_cnt_t moves;
 };
+
+
