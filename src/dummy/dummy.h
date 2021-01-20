@@ -22,9 +22,13 @@ void game_current_player_moved(void);
 
 void game_start(void);
 void game_pause(void);
+void game_resume(void);
 bool game_is_started(void);
 
-void game_referee_intervention(game_time_t time_p1, moves_cnt_t moves_p1, game_time_t time_p2, moves_cnt_t moves_p2);
+void game_referee_intervention(game_time_t time_p1,
+                               game_time_t time_p2,
+                               moves_cnt_t moves,
+                               enum player_id next_to_move);
 
 void current_player_second_elapsed(void);
 // how to count seconds on hardware timers
