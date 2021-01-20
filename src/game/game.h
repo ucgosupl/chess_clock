@@ -14,8 +14,6 @@ enum player_id
 
 struct time_config;
 
-typedef uint32_t game_time_t;
-
 void game_init(struct time_config *time);
 
 void game_current_player_moved(void);

@@ -7,8 +7,7 @@ extern "C"
 #include "game/time_config.h"
 }
 
-#define SEC_PER_MIN         60
-#define MIN_TO_SEC(min)     ((min) * SEC_PER_MIN)
+
 
 static const game_time_t DEFAULT_BASE_TIME = MIN_TO_SEC(5);
 static const game_time_t DEFAULT_TIME_ADDED = MIN_TO_SEC(3);
@@ -21,8 +20,8 @@ static void init_game_with_time_config(game_time_t base_time,
     struct time_config config;
     config.base_time = base_time;
     config.bonus_per_move = bonus_per_move;
-    config.bonus_time.moves = moves;
-    config.bonus_time.time_added = bonus_time;
+    config.moves = moves;
+    config.time_added = bonus_time;
     game_init(&config);
 }
 

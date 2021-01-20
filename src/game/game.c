@@ -3,8 +3,6 @@
 #include "time_config.h"
 #include <string.h>
 
-typedef uint32_t moves_cnt_t;
-
 struct player
 {
     game_time_t time_left;
@@ -257,10 +255,10 @@ static void update_time_with_bonus(struct player *player)
 
 static void update_time_after_control(struct player *player)
 {
-    moves_cnt_t moves_to_control = game_state.current_time_config.bonus_time.moves;
+    moves_cnt_t moves_to_control = game_state.current_time_config.moves;
     player->moves_cnt++;
     if (0 < moves_to_control && player->moves_cnt == moves_to_control)
     {
-        player->time_left += game_state.current_time_config.bonus_time.time_added;
+        player->time_left += game_state.current_time_config.time_added;
     }
 }
