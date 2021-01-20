@@ -2,9 +2,9 @@
 
 extern "C"
 {
-#include "dummy/dummy.h"
+#include "game/game.h"
 
-#include "dummy/time_config.h"
+#include "game/time_config.h"
 }
 
 #define SEC_PER_MIN         60
@@ -74,7 +74,7 @@ static void time_elapsed(game_time_t period)
 
     for (i = 0; i < period; i++)
     {
-        current_player_second_elapsed();
+        game_second_elapsed_for_current_player();
     }
 }
 
@@ -90,14 +90,14 @@ SCENARIO("Game initialization")
 
             THEN("Player1 have 5 minutes left")
             {
-                game_time_t p1_time_left = player_get_time_left(PLAYER_1);
+                game_time_t p1_time_left = game_time_left_for_player(PLAYER_1);
 
                 REQUIRE(p1_time_left == time_expected);
             }
 
             THEN("Player2 have 5 minutes left")
             {
-                game_time_t p2_time_left = player_get_time_left(PLAYER_2);
+                game_time_t p2_time_left = game_time_left_for_player(PLAYER_2);
 
                 REQUIRE(p2_time_left == time_expected);
             }
@@ -114,14 +114,14 @@ SCENARIO("Game initialization")
 
             THEN("Player1 have 15 minutes left")
             {
-                game_time_t p1_time_left = player_get_time_left(PLAYER_1);
+                game_time_t p1_time_left = game_time_left_for_player(PLAYER_1);
 
                 REQUIRE(p1_time_left == time_expected);
             }
 
             THEN("Player2 have 15 minutes left")
             {
-                game_time_t p2_time_left = player_get_time_left(PLAYER_2);
+                game_time_t p2_time_left = game_time_left_for_player(PLAYER_2);
 
                 REQUIRE(p2_time_left == time_expected);
             }
@@ -266,18 +266,18 @@ SCENARIO("Second elapsed")
     
         WHEN("Second elapsed for current player")
         {
-            current_player_second_elapsed();
+            game_second_elapsed_for_current_player();
 
             THEN("Player1 time not decreased")
             {
-                game_time_t p1_time_left = player_get_time_left(PLAYER_1);
+                game_time_t p1_time_left = game_time_left_for_player(PLAYER_1);
 
                 REQUIRE(DEFAULT_BASE_TIME == p1_time_left);
             }
 
             THEN("Player2 time not decreased")
             {
-                game_time_t p2_time_left = player_get_time_left(PLAYER_2);
+                game_time_t p2_time_left = game_time_left_for_player(PLAYER_2);
 
                 REQUIRE(DEFAULT_BASE_TIME == p2_time_left);
             }
@@ -289,19 +289,19 @@ SCENARIO("Second elapsed")
 
             WHEN("Second elapsed for current player")
             {
-                current_player_second_elapsed();
+                game_second_elapsed_for_current_player();
 
                 THEN("Player1 time decreased")
                 {
                     const game_time_t time_expected = DEFAULT_BASE_TIME - 1;
-                    game_time_t p1_time_left = player_get_time_left(PLAYER_1);
+                    game_time_t p1_time_left = game_time_left_for_player(PLAYER_1);
 
                     REQUIRE(time_expected == p1_time_left);
                 }
 
                 THEN("Player2 time not decreased")
                 {
-                    game_time_t p2_time_left = player_get_time_left(PLAYER_2);
+                    game_time_t p2_time_left = game_time_left_for_player(PLAYER_2);
 
                     REQUIRE(DEFAULT_BASE_TIME == p2_time_left);
                 }
@@ -313,11 +313,11 @@ SCENARIO("Second elapsed")
 
                 WHEN("Second elapsed for current player")
                 {
-                    current_player_second_elapsed();
+                    game_second_elapsed_for_current_player();
 
                     THEN("Player1 time not decreased")
                     {
-                        game_time_t p1_time_left = player_get_time_left(PLAYER_1);
+                        game_time_t p1_time_left = game_time_left_for_player(PLAYER_1);
 
                         REQUIRE(DEFAULT_BASE_TIME == p1_time_left);
                     }
@@ -330,11 +330,11 @@ SCENARIO("Second elapsed")
 
                 WHEN("Second elapsed for current player")
                 {
-                    current_player_second_elapsed();
+                    game_second_elapsed_for_current_player();
 
                     THEN("Player1 time not decreased")
                     {
-                        game_time_t p1_time_left = player_get_time_left(PLAYER_1);
+                        game_time_t p1_time_left = game_time_left_for_player(PLAYER_1);
 
                         REQUIRE(DEFAULT_BASE_TIME == p1_time_left);
                     }
@@ -342,7 +342,7 @@ SCENARIO("Second elapsed")
                     THEN("Player2 time decreased")
                     {
                         const game_time_t time_expected = DEFAULT_BASE_TIME - 1;
-                        game_time_t p2_time_left = player_get_time_left(PLAYER_2);
+                        game_time_t p2_time_left = game_time_left_for_player(PLAYER_2);
 
                         REQUIRE(time_expected == p2_time_left);
                     }
@@ -369,7 +369,7 @@ SCENARIO("Time ended")
 
             WHEN("Second elapsed for Player1")
             {
-                current_player_second_elapsed();
+                game_second_elapsed_for_current_player();
 
                 THEN("Time ended for Player1")
                 {
@@ -387,7 +387,7 @@ SCENARIO("Time ended")
 
                     WHEN("Second elapsed for Player2")
                     {
-                        current_player_second_elapsed();
+                        game_second_elapsed_for_current_player();
 
                         THEN("Time ended for Player1")
                         {
@@ -400,7 +400,7 @@ SCENARIO("Time ended")
             WHEN("Second elapsed for Player2")
             {
                 game_current_player_moved();
-                current_player_second_elapsed();
+                game_second_elapsed_for_current_player();
 
                 THEN("Time ended for Player2")
                 {
@@ -418,7 +418,7 @@ SCENARIO("Time ended")
 
                     WHEN("Second elapsed for Player1")
                     {
-                        current_player_second_elapsed();
+                        game_second_elapsed_for_current_player();
 
                         THEN("Time ended for Player2")
                         {
@@ -443,13 +443,13 @@ SCENARIO("Bonus time per move")
 
             THEN("Player 1 has bonus time for first move")
             {
-                game_time_t time_left = player_get_time_left(PLAYER_1);
+                game_time_t time_left = game_time_left_for_player(PLAYER_1);
                 REQUIRE(time_left == DEFAULT_BASE_TIME + 30);
             }
 
             THEN("Player 2 has bonus time for first move")
             {
-                game_time_t time_left = player_get_time_left(PLAYER_2);
+                game_time_t time_left = game_time_left_for_player(PLAYER_2);
                 REQUIRE(time_left == DEFAULT_BASE_TIME + 30);
             }
 
@@ -459,13 +459,13 @@ SCENARIO("Bonus time per move")
 
                 THEN("Player1 have 5 min + 2x 30 s left")
                 {
-                    game_time_t time_left = player_get_time_left(PLAYER_1);
+                    game_time_t time_left = game_time_left_for_player(PLAYER_1);
                     REQUIRE(time_left == DEFAULT_BASE_TIME + 2*30);
                 }
 
                 THEN("Player2 have 5 min + 30 s left")
                 {
-                    game_time_t time_left = player_get_time_left(PLAYER_2);
+                    game_time_t time_left = game_time_left_for_player(PLAYER_2);
                     REQUIRE(time_left == DEFAULT_BASE_TIME + 30);
                 }
 
@@ -475,13 +475,13 @@ SCENARIO("Bonus time per move")
 
                     THEN("Player1 have 5 min + 2x 30 s left")
                     {
-                        game_time_t time_left = player_get_time_left(PLAYER_1);
+                        game_time_t time_left = game_time_left_for_player(PLAYER_1);
                         REQUIRE(time_left == DEFAULT_BASE_TIME + 2 * 30);
                     }
 
                     THEN("Player2 have 5 min + 2x 30 s left")
                     {
-                        game_time_t time_left = player_get_time_left(PLAYER_2);
+                        game_time_t time_left = game_time_left_for_player(PLAYER_2);
                         REQUIRE(time_left == DEFAULT_BASE_TIME + 2 * 30);
                     }
                 }
@@ -507,14 +507,14 @@ SCENARIO("Time exceeded with bonus time per move - Player 1")
 
                 THEN("Player 1 time left is 1 + 30s")
                 {
-                    game_time_t time_left = player_get_time_left(PLAYER_1);
+                    game_time_t time_left = game_time_left_for_player(PLAYER_1);
                     REQUIRE(time_left == 30 + 1);
                 }
             }
 
             WHEN("Second elapsed")
             {
-                current_player_second_elapsed();
+                game_second_elapsed_for_current_player();
 
                 WHEN("Player 1 moved")
                 {
@@ -522,7 +522,7 @@ SCENARIO("Time exceeded with bonus time per move - Player 1")
 
                     THEN("Player 1 time left is 0")
                     {
-                        game_time_t time_left = player_get_time_left(PLAYER_1);
+                        game_time_t time_left = game_time_left_for_player(PLAYER_1);
                         REQUIRE(time_left == 0);
                     }
                 }
@@ -549,14 +549,14 @@ SCENARIO("Time exceeded with bonus time per move - Player 2")
 
                 THEN("Player 2 time left is 1 + 30s")
                 {
-                    game_time_t time_left = player_get_time_left(PLAYER_2);
+                    game_time_t time_left = game_time_left_for_player(PLAYER_2);
                     REQUIRE(time_left == 30 + 1);
                 }
             }
 
             WHEN("Second elapsed")
             {
-                current_player_second_elapsed();
+                game_second_elapsed_for_current_player();
 
                 WHEN("Player 2 moved")
                 {
@@ -564,7 +564,7 @@ SCENARIO("Time exceeded with bonus time per move - Player 2")
 
                     THEN("Player 2 time left is 0")
                     {
-                        game_time_t time_left = player_get_time_left(PLAYER_2);
+                        game_time_t time_left = game_time_left_for_player(PLAYER_2);
                         REQUIRE(time_left == 0);
                     }
                 }
@@ -586,13 +586,13 @@ SCENARIO("Time control")
 
             THEN("Bonus time not added for player 1")
             {
-                game_time_t time_left = player_get_time_left(PLAYER_1);
+                game_time_t time_left = game_time_left_for_player(PLAYER_1);
                 REQUIRE(time_left == DEFAULT_BASE_TIME);
             }
 
             THEN("Bonus time not added for player 2")
             {
-                game_time_t time_left = player_get_time_left(PLAYER_2);
+                game_time_t time_left = game_time_left_for_player(PLAYER_2);
                 REQUIRE(time_left == DEFAULT_BASE_TIME);
             }
 
@@ -602,13 +602,13 @@ SCENARIO("Time control")
 
                 THEN("Bonus time added for player 1")
                 {
-                    game_time_t time_left = player_get_time_left(PLAYER_1);
+                    game_time_t time_left = game_time_left_for_player(PLAYER_1);
                     REQUIRE(time_left == DEFAULT_BASE_TIME + DEFAULT_TIME_ADDED);
                 }
 
                 THEN("Bonus time not added for player 2")
                 {
-                    game_time_t time_left = player_get_time_left(PLAYER_2);
+                    game_time_t time_left = game_time_left_for_player(PLAYER_2);
                     REQUIRE(time_left == DEFAULT_BASE_TIME);
                 }
 
@@ -618,7 +618,7 @@ SCENARIO("Time control")
 
                     THEN("Bonus time added for player 2")
                     {
-                        game_time_t time_left = player_get_time_left(PLAYER_2);
+                        game_time_t time_left = game_time_left_for_player(PLAYER_2);
                         REQUIRE(time_left == DEFAULT_BASE_TIME + DEFAULT_TIME_ADDED);
                     }
                 }
@@ -650,7 +650,7 @@ SCENARIO("Time control after pause")
 
                     THEN("Bonus time added for player 1")
                     {
-                        game_time_t time_left = player_get_time_left(PLAYER_1);
+                        game_time_t time_left = game_time_left_for_player(PLAYER_1);
                         REQUIRE(time_left == DEFAULT_BASE_TIME + DEFAULT_TIME_ADDED);
                     }
 
@@ -660,7 +660,7 @@ SCENARIO("Time control after pause")
 
                         THEN("Bonus time added for player 2")
                         {
-                            game_time_t time_left = player_get_time_left(PLAYER_2);
+                            game_time_t time_left = game_time_left_for_player(PLAYER_2);
                             REQUIRE(time_left == DEFAULT_BASE_TIME + DEFAULT_TIME_ADDED);
                         }
                     }
@@ -692,13 +692,13 @@ SCENARIO("Referee intervention on Player 1 turn")
 
                 THEN("Time for Player 1 matches referee intervention")
                 {
-                    game_time_t time_left = player_get_time_left(PLAYER_1);
+                    game_time_t time_left = game_time_left_for_player(PLAYER_1);
                     REQUIRE(time_left == p1time);
                 }
 
                 THEN("Time for Player 2 matches referee intervention")
                 {
-                    game_time_t time_left = player_get_time_left(PLAYER_2);
+                    game_time_t time_left = game_time_left_for_player(PLAYER_2);
                     REQUIRE(time_left == p2time);
                 }
 
@@ -708,13 +708,13 @@ SCENARIO("Referee intervention on Player 1 turn")
 
                     THEN("Bonus time added for player 1")
                     {
-                        game_time_t time_left = player_get_time_left(PLAYER_1);
+                        game_time_t time_left = game_time_left_for_player(PLAYER_1);
                         REQUIRE(time_left == p1time + DEFAULT_TIME_ADDED);
                     }
 
                     THEN("Bonus time not added for player 2")
                     {
-                        game_time_t time_left = player_get_time_left(PLAYER_2);
+                        game_time_t time_left = game_time_left_for_player(PLAYER_2);
                         REQUIRE(time_left == p2time);
                     }
 
@@ -724,7 +724,7 @@ SCENARIO("Referee intervention on Player 1 turn")
 
                         THEN("Bonus time added for player 2")
                         {
-                            game_time_t time_left = player_get_time_left(PLAYER_2);
+                            game_time_t time_left = game_time_left_for_player(PLAYER_2);
                             REQUIRE(time_left == p2time + DEFAULT_TIME_ADDED);
                         }
                     }
@@ -761,13 +761,13 @@ SCENARIO("Referee intervention on Player 2 turn")
 
                     THEN("Bonus time added for player 1")
                     {
-                        game_time_t time_left = player_get_time_left(PLAYER_1);
+                        game_time_t time_left = game_time_left_for_player(PLAYER_1);
                         REQUIRE(time_left == p1time + DEFAULT_TIME_ADDED);
                     }
 
                     THEN("Bonus time not added for player 2")
                     {
-                        game_time_t time_left = player_get_time_left(PLAYER_2);
+                        game_time_t time_left = game_time_left_for_player(PLAYER_2);
                         REQUIRE(time_left == p2time);
                     }
 
@@ -777,7 +777,7 @@ SCENARIO("Referee intervention on Player 2 turn")
 
                         THEN("Bonus time added for player 2")
                         {
-                            game_time_t time_left = player_get_time_left(PLAYER_2);
+                            game_time_t time_left = game_time_left_for_player(PLAYER_2);
                             REQUIRE(time_left == p2time + DEFAULT_TIME_ADDED);
                         }
                     }

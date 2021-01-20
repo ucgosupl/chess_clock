@@ -34,34 +34,34 @@
             "group": "test"
         },
         {
-            "label": "build dummy_tests debug",
+            "label": "build game_tests debug",
             "type": "shell",
             "command": "ninja -v",
             "args": [],
             "options": {
-                "cwd": "${workspaceFolder}/test/dummy/out"
+                "cwd": "${workspaceFolder}/test/game/out"
             },
             "group": "build",
             "problemMatcher": []
         },
         {
-            "label": "clean dummy_tests",
+            "label": "clean game_tests",
             "type": "shell",
             "command": "ninja -v clean",
             "args": [],
             "options": {
-                "cwd": "${workspaceFolder}/test/dummy/out"
+                "cwd": "${workspaceFolder}/test/game/out"
             },
             "group": "build",
             "problemMatcher": []
         },
         {
             "type": "shell",
-            "label": "run dummy_tests",
-            "command": "./dummy_tests.exe",
+            "label": "run game_tests",
+            "command": "./game_tests.exe",
             "args": [],
             "options": {
-                "cwd": "${workspaceFolder}/test/dummy/out"
+                "cwd": "${workspaceFolder}/test/game/out"
             },
             "group": "test"
         },

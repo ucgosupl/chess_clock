@@ -1,4 +1,4 @@
-#include "dummy.h"
+#include "game.h"
 
 #include "time_config.h"
 #include <string.h>
@@ -8,7 +8,6 @@ typedef uint32_t moves_cnt_t;
 struct player
 {
     game_time_t time_left;
-
     moves_cnt_t moves_cnt;
 };
 
@@ -31,8 +30,8 @@ struct game
     struct player player2;
 
     enum game_state state;
+    
     enum player_id player_to_move;
-
     enum player_id player_exceeded_time_first;
 
     struct time_config current_time_config;
@@ -136,7 +135,7 @@ void game_referee_intervention(game_time_t time_p1,
     game_state.player_to_move = next_to_move;
 }
 
-void current_player_second_elapsed(void)
+void game_second_elapsed_for_current_player(void)
 {
     if (true == game_is_started())
     {
@@ -144,7 +143,7 @@ void current_player_second_elapsed(void)
     }
 }
 
-game_time_t player_get_time_left(enum player_id player)
+game_time_t game_time_left_for_player(enum player_id player)
 {
     switch (player)
     {

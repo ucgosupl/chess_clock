@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(dummy_tests)
+project(game_tests)
 
 #set(CMAKE_BUILD_TYPE Release)
 set(CMAKE_BUILD_TYPE Debug)
@@ -25,7 +25,7 @@ set(CPP_SRCS
 )
 
 set(C_SRCS
-	../../src/dummy/dummy.c
+	../../src/game/game.c
 )
 
 set(CPP_TEST_SRCS
