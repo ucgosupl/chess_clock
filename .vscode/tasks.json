@@ -65,5 +65,37 @@
             },
             "group": "test"
         },
+        {
+            "label": "build display_tests debug",
+            "type": "shell",
+            "command": "ninja -v",
+            "args": [],
+            "options": {
+                "cwd": "${workspaceFolder}/test/display/out"
+            },
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "clean display_tests",
+            "type": "shell",
+            "command": "ninja -v clean",
+            "args": [],
+            "options": {
+                "cwd": "${workspaceFolder}/test/display/out"
+            },
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "type": "shell",
+            "label": "run display_tests",
+            "command": "./display_tests.exe",
+            "args": [],
+            "options": {
+                "cwd": "${workspaceFolder}/test/display/out"
+            },
+            "group": "test"
+        },
     ]
 }
