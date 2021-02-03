@@ -54,9 +54,83 @@ SCENARIO("Converting game time to string")
             }
         }
     }
+
+    //todo: more than 1h
+    //todo more than 10h
+    //todo: less than 10min handled in different format
 }
 
-//when 30 min set -> 0:30 displayed
-//when 20 min set -> 0:20 displayed
-//when 19.59 set -> 19.59 displayed
-//when 15 min set -> 15.00 displayed
+SCENARIO("Change format when less than 20 min left")
+{
+    GIVEN("Both players have 20:00 min left")
+    {
+        game_time_t time_p1 = MIN_TO_SEC(20);
+        game_time_t time_p2 = MIN_TO_SEC(20);
+
+        const struct display_driver mock_driver = {NULL, mock_driver_update, NULL, NULL};
+
+        mock_reset();
+        display_init(&mock_driver);
+
+        WHEN("Display updated")
+        {
+            display_update(time_p1, time_p2, GAME_STARTED, NONE);
+
+            THEN("Driver receives 0:20 for player 1")
+            {
+                assert(mock_p1_time != nullptr);
+                REQUIRE(0 == strcmp(" 0:20", mock_p1_time));
+            }
+
+            THEN("Driver receives 0:20 for player 2")
+            {
+                assert(mock_p2_time != nullptr);
+                REQUIRE(0 == strcmp(" 0:20", mock_p2_time));
+            }
+        }
+
+        WHEN("Second elapsed for player 1")
+        {
+            time_p1 -= 1;
+
+            WHEN("Display updated")
+            {
+                display_update(time_p1, time_p2, GAME_STARTED, NONE);
+
+                THEN("Driver receives 19.59 for player 1")
+                {
+                    assert(mock_p1_time != nullptr);
+                    REQUIRE(0 == strcmp("19.59", mock_p1_time));
+                }
+
+                THEN("Driver receives 0:20 for player 2")
+                {
+                    assert(mock_p2_time != nullptr);
+                    REQUIRE(0 == strcmp(" 0:20", mock_p2_time));
+                }
+            }
+
+            WHEN("Second elapsed for player 2")
+            {
+                time_p2 -= 1;
+
+                WHEN("Display updated")
+                {
+                    display_update(time_p1, time_p2, GAME_STARTED, NONE);
+
+                    THEN("Driver receives 19.59 for player 1")
+                    {
+                        assert(mock_p1_time != nullptr);
+                        REQUIRE(0 == strcmp("19.59", mock_p1_time));
+                    }
+
+                    THEN("Driver receives 19.59 for player 2")
+                    {
+                        assert(mock_p2_time != nullptr);
+                        REQUIRE(0 == strcmp("19.59", mock_p2_time));
+                    }
+                }
+            }
+        }
+    }
+}

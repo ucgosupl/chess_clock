@@ -17,6 +17,9 @@ static struct display_params params;
 static struct display_driver *drv = NULL;
 
 static void gametime_to_char(game_time_t time, char *buf);
+static void convert_hour_min(game_time_t time, char *buf);
+static void convert_min_sec(game_time_t time, char *buf);
+
 static void itoa_with_blanks(uint32_t num, char *buf);
 static void itoa_with_zeros(uint32_t num, char *buf);
 
@@ -37,16 +40,39 @@ void display_update(game_time_t time_p1, game_time_t time_p2, enum game_state st
 
 static void gametime_to_char(game_time_t time, char *buf)
 {
-    uint32_t hours = time / (60 * 60);
-    uint32_t mins = time / 60 - hours * 60;
+    if ((time / 60) < 20)
+    {
+        convert_min_sec(time, buf);
+    }
+    else
+    {
+        convert_hour_min(time, buf);
+    }
+}
 
-    assert(hours < 100);
-    assert(mins < 60);
+static void convert_hour_min(game_time_t time, char *buf)
+{
+        uint32_t hour = time / (60 * 60);
+        uint32_t min = time / 60 - hour * 60;
 
-    itoa_with_blanks(hours, buf);
-    buf[2] = ':';
-    itoa_with_zeros(mins, &buf[3]);
-    buf[5] = '\0';
+        assert(hour < 100);
+        assert(min < 60);
+
+        itoa_with_blanks(hour, buf);
+        buf[2] = ':';
+        itoa_with_zeros(min, &buf[3]);
+        buf[5] = '\0';
+}
+
+static void convert_min_sec(game_time_t time, char *buf)
+{
+        uint32_t min = time / 60;
+        uint32_t sec = time % 60;
+
+        itoa_with_blanks(min, buf);
+        buf[2] = '.';
+        itoa_with_zeros(sec, &buf[3]);
+        buf[5] = '\0';
 }
 
 static void itoa_with_blanks(uint32_t num, char *buf)
